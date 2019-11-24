@@ -4,7 +4,7 @@ const { uploads } = require("../config/environment");
 
 class PropiedadesController {
   constructor() {}
-
+  // Se crean propiedades
   async create(req, res, next) {
     const {
       titulo,
@@ -33,6 +33,7 @@ class PropiedadesController {
       propiedad
     });
   }
+  //Sa llama una sola propiedad
 
   async findOne(req, res, next) {
     const propiedad = await Propiedades.findAll({
@@ -52,13 +53,14 @@ class PropiedadesController {
       error: false
     });
   }
+  //Se traen varias propiedades
   async findAll(req, res, next) {
     const propiedad = await Propiedades.findAll();
 
     if (!propiedad)
       return res
         .status(400)
-        .json({ message: "There isn't propiedades", error: true });
+        .json({ message: "No hay propiedades", error: true });
 
     res.status(200).json({
       message: "Success",
@@ -67,6 +69,7 @@ class PropiedadesController {
     });
   }
 
+  // Se actualiza propiedad
   async update(req, res, next) {
     try {
       const {
@@ -101,7 +104,7 @@ class PropiedadesController {
           .json({ message: "La propiedad no se actualizo", error: true });
 
       res.status(200).json({
-        message: "Success",
+        message: "La propiedad se ha actualizado",
         data: propiedad,
         error: false
       });
@@ -110,6 +113,25 @@ class PropiedadesController {
         .status(500)
         .json({ message: "Error: " + err.toString(), error: true });
     }
+  }
+  //Se elimina propiedad
+  async destroy(req, res, next) {
+    // const { id_propiedades } = req.params;
+
+    const propiedad = await Propiedades.destroy({
+      where: { id_propiedades: req.params.id }
+    });
+    if (!propiedad)
+      return res.status(400).json({
+        message: "La propiedad no se ha podido eliminar",
+        error: true
+      });
+
+    res.status(200).json({
+      message: "La propiedad se ha eliminado ",
+      data: propiedad,
+      error: false
+    });
   }
 }
 

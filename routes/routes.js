@@ -17,6 +17,7 @@ router
 router
   .route("/propiedades/:id")
   .get(controller.findOne)
-  .put(upload.single("imagen"), controller.update);
+  .put(upload.single("imagen"), controller.update)
+  .delete(controller.destroy);
 
 module.exports = router;
