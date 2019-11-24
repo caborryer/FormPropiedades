@@ -4,8 +4,13 @@ const app = express();
 const path = require("path");
 const routes = require("./routes/routes");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
-// import routes from "./routes/routes";
+// middlewares
+app.use(morgan("dev"));
+app.use(cors());
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Db conection
 const db = require("./db/connect");
@@ -14,14 +19,7 @@ db.sync()
   .then(() => console.log("Conectado al Servidor de la BD"))
   .catch(error => console.log(error));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 app.set("port", 5000 || process.env.PORT);
-
-// middlewares
-app.use(morgan("dev"));
-app.use(cors());
 
 //Rutas
 app.use("/", routes);
